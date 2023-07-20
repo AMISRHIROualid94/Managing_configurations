@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,18 @@ public class McApplication {
 		DbConfig dbConfig = context.getBean(DbConfig.class);
 		logger.warn(dbConfig.toString());
 //		End Using @PropertySource
+
+//		Using an OS environment variable
 		
+		//		System.setProperty("APP_TIMEOUT","30");
+		//		or
+		//		add it manually : Run -> edit Config -> modify Options... -> environment variable
+		//		example : APP_TIMEOUT=30
+
+		Environment environment = context.getBean(Environment.class);
+		logger.warn("APP_TIMEMOUT: {} ",environment.getProperty("app.timeout"));
+		logger.warn("NOT_FOUND: {} ",environment.getProperty("app.not-found"));
+//		End Using an OS environment variable
 	}
 
 }
