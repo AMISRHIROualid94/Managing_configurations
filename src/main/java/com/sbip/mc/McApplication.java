@@ -1,10 +1,13 @@
 package com.sbip.mc;
 
+import com.sbip.mc.ConfigProp.AppProperties;
 import com.sbip.mc.PropertiesSrc.DbConfig;
+import com.sbip.mc.Services.AppService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -13,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableConfigurationProperties(AppProperties.class)
 public class McApplication {
 
 	public static void main(String[] args) {
@@ -42,7 +46,7 @@ public class McApplication {
 //		End Using @PropertySource
 
 //		Using an OS environment variable
-		
+
 		//		System.setProperty("APP_TIMEOUT","30");
 		//		or
 		//		add it manually : Run -> edit Config -> modify Options... -> environment variable
@@ -52,6 +56,11 @@ public class McApplication {
 		logger.warn("APP_TIMEMOUT: {} ",environment.getProperty("app.timeout"));
 		logger.warn("NOT_FOUND: {} ",environment.getProperty("app.not-found"));
 //		End Using an OS environment variable
+
+//		Using @ConfigurationProperties
+		AppService appService = context.getBean(AppService.class);
+		logger.warn(appService.getAppProperties().toString());
+//		End Using @ConfigurationProperties
 	}
 
 }
