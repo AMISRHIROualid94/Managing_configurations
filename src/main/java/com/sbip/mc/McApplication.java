@@ -5,10 +5,13 @@ import com.sbip.mc.PropertiesSrc.DbConfig;
 import com.sbip.mc.Services.AppService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
@@ -17,11 +20,11 @@ import java.util.Properties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
-public class McApplication {
-
+public class McApplication implements CommandLineRunner{
+	public static final Logger logger = LoggerFactory.getLogger(McApplication.class);
 	public static void main(String[] args) {
 
-		Logger logger = LoggerFactory.getLogger(McApplication.class);
+
 
 		SpringApplication application = new SpringApplication(McApplication.class);
 		ConfigurableApplicationContext context = application.run(args);
@@ -62,5 +65,17 @@ public class McApplication {
 		logger.warn(appService.getAppProperties().toString());
 //		End Using @ConfigurationProperties
 	}
+	@Bean
+	@Order(2)
+	public CommandLineRunner commandLineRunner(){
+		return args -> {
+			logger.warn("CommandLineRunner executed as a Bean ....... ");
+		};
+	}
 
+	@Override
+	@Order(3)
+	public void run(String... args) throws Exception {
+		logger.warn("CommandLineRunner Executed as an implementation ......");
+	}
 }
